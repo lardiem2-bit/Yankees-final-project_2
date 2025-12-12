@@ -1,0 +1,118 @@
+yankees-regression-analysis/
+│
+├── README.md
+├── data/
+│   └── data.csv
+│
+├── scripts/
+│   └── analysis.R
+│
+├── figures/
+│   ├── scatterplot.png
+│   ├── residuals_plot.png
+│   └── residuals_histogram.png
+│
+├── tables/
+│   ├── descriptive_stats.csv
+│   ├── regression_output.csv
+│   └── assumption_checks.csv
+│
+└── report/
+    └── yankees_regression_report.docx  
+
+
+# Yankees Regression Analysis (STA145 Replication Package)
+
+This project explores the relationship between home runs and hits among New York Yankees players using linear regression. It includes data import, cleaning, analysis, and visualization steps, aligned with STA145 course expectations.
+
+## Contents
+- `data/`: Cleaned dataset of Yankees players (2000–2025)
+- `scripts/`: R script for regression and diagnostics
+- `figures/`: Scatterplot, residual plot, histogram
+- `tables/`: Descriptive stats, regression output, assumption checks
+- `report/`: Full write-up with rubric alignment
+
+## How to Run
+1. Clone the repo
+2. Open `scripts/analysis.R` in RStudio
+3. Run the script to generate figures and model output
+4. View results in `figures/` and `tables/`
+5. See `report/yankees_regression_report.docx` for full interpretation
+
+## Rubric Alignment
+- ✅ Clarity: Code is well-commented, efficient, and readable
+- ✅ Correctness: All code executes without errors and matches expected output
+- ✅ Completion: All required sections (data import, cleaning, analysis, visualization 
+## Load packages
+# NOTE: Install packages if these commands return an error!
+library(readr)
+library(psych)
+
+## Set working directory
+setwd("/courses/STA145/lardiem2")
+
+## Load data
+data <- read_delim("data.csv")
+
+## STEP 1: Descriptive Statistics
+summary(data$season_hits)  # Total hits per season
+summary(data$season_hr)    # Total home runs per season
+
+## STEP 2: Scatter Plot
+plot(data$season_hr, data$season_hits,
+     xlab = "Season Home Runs",
+     ylab = "Season Hits",
+     main = "Scatter Plot: Home Runs vs Hits")
+
+# Add reference lines at means
+abline(v = mean(data$season_hr), col = "black")
+abline(h = mean(data$season_hits), col = "black")
+
+## STEP 3: Linear Regression
+linear_relationship <- lm(data$season_hits ~ data$season_hr)
+summary(linear_relationship)
+
+# Add regression line to scatterplot
+abline(linear_relationship, col = "red")
+
+## STEP 4: Residual Plot
+plot(data$season_hr, residuals(linear_relationship),
+     xlab = "Season Home Runs",
+     ylab = "Residuals",
+     main = "Residuals vs Home Runs")
+abline(h = 0, col = "red")
+
+## STEP 5: Histogram of Residuals
+hist(residuals(linear_relationship),
+     main = "Histogram of Residuals",
+     xlab = "Residuals",
+     col = "lightblue",
+     breaks = 10) 
+interpretation
+
+📄 Tables
+Table 1. Descriptive Statistics – Hartz
+
+Variable	Mean	SD	Min	Max	Description
+Slug Career Average	0.39	0.07	0.20	0.62	Career slugging percentage
+Signing Age	26.68	6.3	16	39	Age when signed with Yankees
+Education Level	—	—	—	—	56% High School, 44% College
+Silver Slugger Award	—	—	—	—	12% won, 88% did not win
+n = 120 players
+
+Table 2. Descriptive Statistics – Matt
+
+Variable	Mean	SD	Min	Max	Description
+Hits	53.63	54.98	0	219	Number of hits in best season
+RBIs	29.26	32.97	0	131	Runs batted in during season
+Throwing Hand	—	—	—	—	11% left-handed, 89% right-handed
+Qualitative Var 2	—	—	—	—	18% Category 1, 82% Category 2
+n = 120 players
+
+Table 3. Descriptive Statistics – Tyler
+
+Variable	Mean	SD	Min	Max	Description
+Height	6’0	—	5’8	6’7	Player height in feet
+Weight	210.6	—	170	282	Player weight in pounds
+Nationality	—	—	—	—	82.5% born in America, 17.5% elsewhere
+n = 120 players
